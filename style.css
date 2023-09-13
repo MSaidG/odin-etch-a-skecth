@@ -1,0 +1,38 @@
+div {
+    display: flex;
+    background-color: aqua;
+    width: 960px;
+    height: 960px;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    margin: 0px;
+    padding: 0px;
+
+
+}
+
+.top {
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+}
+
+.grid {
+    background-color: blue;
+    display: flex;
+    width: 10px;
+    height: 10px;
+    margin: 0px;
+    padding: 0px;
+    flex-grow: 0;
+    flex-basis: 60px;
+    flex-shrink: 0px;
+
+}
+
+
+.hover {
+
+    background-color: brown;
+}
+
