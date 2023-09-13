@@ -1,24 +1,60 @@
+const buttonSize = document.querySelector("#size");
+const buttonClear = document.querySelector("#clear");
+const buttonColor = document.querySelector("#color");
+const buttonRainbow = document.querySelector("#rainbow");
 let container = document.querySelector("#container");
-//const grid = document.createElement("div");
-const button = document.querySelector("button");
+let gridSize = 16;
+let isMouseDown = false;
 
-button.addEventListener("click", () => {
+
+buttonSize.addEventListener("click", () => {
     
-    let gridSize;
+    regenerateGrid(promptForGridSize());
+    
+});
+
+document.addEventListener("mousemove", setPrimaryButtonState);
+document.addEventListener("mouseup", setPrimaryButtonState);
+
+buttonClear.addEventListener("click", () => {
+    regenerateGrid(gridSize)
+});
+
+function promptForGridSize()
+{
+    oldGridSize = gridSize;
     do {
         gridSize = +prompt(`Number of squares per side for the new grid (Max is 100): `);
     }
     while (gridSize > 100)
+
+    if (!gridSize)
+    {
+        gridSize = oldGridSize;
+
+    }
+    
+    return gridSize;
+
+}
+
+function regenerateGrid(gridSize)
+
+{
+
     container.replaceChildren();
     generateGrid(gridSize);
-    
-});
+
+}
 
 
-generateGrid(16);
+
+
 
 function generateGrid(gridSize)
 {
+
+
     container.hidden = false;
     for (let i = 0; i < gridSize; i++)
     {
@@ -34,21 +70,59 @@ function generateGrid(gridSize)
         }
     }
 
-    const grids = document.querySelectorAll(".grid");
+    changeHover();
+    
+}
 
+
+function changeHover()
+{
+    let colorMode = "color";
+    buttonColor.addEventListener("click", () => {
+        colorMode = "color"
+    });
+    
+    buttonRainbow.addEventListener("click", () => {
+        colorMode = "rainbow";
+    });
+
+    const grids = document.querySelectorAll(".grid");
     grids.forEach( function(grid) {
 
         grid.addEventListener("mouseover", (e) => {
-
-            //e.target.classList.add("hover");
-            let red = Math.floor(Math.random() * 256);
-            let green = Math.floor(Math.random() * 256);
-            let blue = Math.floor(Math.random() * 256);
-            e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
-
+            if (isMouseDown)
+            {
+                changeColor(e, colorMode);
+            }
         });
     });
 }
 
 
 
+function setPrimaryButtonState(e) {
+    e.preventDefault ? e.preventDefault() : e.returnValue = false
+    let flags = e.buttons !== undefined ? e.buttons : e.which;
+    isMouseDown = (flags & 1) === 1;
+
+    return isMouseDown;
+}
+
+function changeColor(e, colorMode)
+{
+    if (colorMode === "color")
+    {
+        e.target.style.backgroundColor = "red";
+    }
+    else
+    {
+        let red = Math.floor(Math.random() * 256);
+        let green = Math.floor(Math.random() * 256);
+        let blue = Math.floor(Math.random() * 256);
+        e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+    }
+    console.log(colorMode);
+}
+
+
+generateGrid(gridSize);
