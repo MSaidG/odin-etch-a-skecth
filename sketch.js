@@ -1,44 +1,54 @@
-const container = document.querySelector("#container");
+let container = document.querySelector("#container");
 //const grid = document.createElement("div");
 const button = document.querySelector("button");
 
 button.addEventListener("click", () => {
-
     
-
-});
-
-
-container.hidden = false;
-let gridSize = 16;
-for (let i = 0; i < gridSize; i++)
-{
-    for (let j = 0; j < gridSize; j++)
-    {
-        const grid = document.createElement("div");
-        grid.classList.add("grid");
-        grid.style.width = `${960/gridSize}px`;
-        grid.style.height = `${960/gridSize}px`;
-        grid.hidden = false;
-        grid.classList.add("grid")
-        container.append(grid);
+    let gridSize;
+    do {
+        gridSize = +prompt(`Number of squares per side for the new grid (Max is 100): `);
     }
-}
-
-console.log(960/gridSize);
-
-const grids = document.querySelectorAll(".grid");
-
-grids.forEach( function(grid) {
-
-    grid.addEventListener("mouseover", (e) => {
-
-        e.target.classList.add("hover");
-        
-    });
+    while (gridSize > 100)
+    container.replaceChildren();
+    generateGrid(gridSize);
+    
 });
 
-function changeColor(e)
+
+generateGrid(16);
+
+function generateGrid(gridSize)
 {
-    console.log(e);
+    container.hidden = false;
+    for (let i = 0; i < gridSize; i++)
+    {
+        for (let j = 0; j < gridSize; j++)
+        {
+            const grid = document.createElement("div");
+            grid.classList.add("grid");
+            grid.style.width = `${960/gridSize}px`;
+            grid.style.height = `${960/gridSize}px`;
+            grid.style.flexBasis = `${960/gridSize}px`;
+            grid.classList.add("grid")
+            container.append(grid);
+        }
+    }
+
+    const grids = document.querySelectorAll(".grid");
+
+    grids.forEach( function(grid) {
+
+        grid.addEventListener("mouseover", (e) => {
+
+            //e.target.classList.add("hover");
+            let red = Math.floor(Math.random() * 256);
+            let green = Math.floor(Math.random() * 256);
+            let blue = Math.floor(Math.random() * 256);
+            e.target.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
+
+        });
+    });
 }
+
+
+
